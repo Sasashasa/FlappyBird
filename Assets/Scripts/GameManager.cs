@@ -4,6 +4,7 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     private State _state;
+    private Mode _mode;
     
     private enum State
     {
@@ -16,8 +17,7 @@ public class GameManager : MonoBehaviour
     {
         _state = State.WaitingToStart;
         
-        if (!PlayerPrefs.HasKey(SaveDataType.BestScore))
-            PlayerPrefs.SetInt(SaveDataType.BestScore, 0);
+        Physics2D.gravity = PlayerData.Mode == Mode.Reversed ? new Vector2(0, 9.81f) : new Vector2(0, -9.81f);
     }
 
     private void Start()

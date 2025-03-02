@@ -8,6 +8,7 @@ public class LevelUI : MonoBehaviour
     public static LevelUI Instance { get; private set; }
 
     [SerializeField] private TextMeshProUGUI _currentScoreText;
+    [SerializeField] private TextMeshProUGUI _coinsText;
     [SerializeField] private Image _getReadyImage;
 
     private static readonly int StartGame = Animator.StringToHash("StartGame");
@@ -21,6 +22,10 @@ public class LevelUI : MonoBehaviour
     {
         Bird.Instance.OnScoreChanged += Bird_OnScoreChanged;
         Bird.Instance.OnGameOver += Bird_OnGameOver;
+        Bird.Instance.OnCoinCollected += Bird_OnCoinCollected;
+        
+        UpdateCurrentScore(0);
+        UpdateCoinsText();
     }
 
     public void ShowGetReadyImageAnimation()
@@ -31,6 +36,11 @@ public class LevelUI : MonoBehaviour
     private void UpdateCurrentScore(int score)
     {
         _currentScoreText.text = score.ToString();
+    }
+    
+    private void UpdateCoinsText()
+    {
+        _coinsText.text = PlayerPrefs.GetInt(SaveDataType.Coins).ToString();
     }
 
     private void HideLevelUIElements()
@@ -47,5 +57,10 @@ public class LevelUI : MonoBehaviour
     private void Bird_OnGameOver(object sender, EventArgs e)
     {
         HideLevelUIElements();
+    }
+    
+    private void Bird_OnCoinCollected(object sender, EventArgs e)
+    {
+        UpdateCoinsText();
     }
 }
